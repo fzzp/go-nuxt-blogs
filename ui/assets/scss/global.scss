@@ -1,0 +1,25 @@
+@import "vars";
+@import "mixins";
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul, li {
+  list-style: none;
+}
+
+.max-w{
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+
+// 全局重置一些 Element CSS
+.el-dialog {
+  --el-border-radius-small: 0.625em;
+}
