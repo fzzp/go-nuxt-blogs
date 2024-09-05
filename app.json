@@ -1,0 +1,17 @@
+{
+    "mode": "development",
+    "dsn": "db.sqlite",
+    "maxOpenConns": 25,
+    "maxIdleConns": 25,
+    "maxIdleTime": "5m",
+    "maxLifetime": "2h",
+    "host": "0.0.0.0",
+    "port": 4006,
+    "tokenIssuer": "http://localhost:4009",
+    "tokenSecret": "0ZsBIM4IaSktsaOCdZlW2cJS4u04QLnhRmcD",
+    "tokenExpire": "72h",
+    "refreshTokenExpire": "1000h",
+    "luckFile": "./luck",
+    "allowFiles": ["image/png", "image/jpeg", "image/gif"],
+    "logLevel": "DEBUG"
+}
