@@ -9,6 +9,12 @@ export default defineNuxtConfig({
     path: "~/components",
     pathPrefix: false
   }],
+  runtimeConfig: {
+    public: {
+      Apiprev: process.env.NUXT_PUBLIC_API_BASE,
+      ImgPrev: process.env.NUXT_PUBLIC_IMG_BASE
+    }
+  },
   css: [
     "~/assets/scss/global.scss",
   ],

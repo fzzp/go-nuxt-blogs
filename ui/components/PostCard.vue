@@ -4,20 +4,23 @@
         <h3 class="card-title">{{ post.title }}</h3>
         <p class="card-subtitle">{{ subTitle(post.content) }}</p>
         <div class="card-footer">
-            <div class="">
+            <div class="time">
                 <span>{{ post.createdAt }}</span>
             </div>
-            <NuxtLink :to="`/posts/${post.id}`">
-                <!-- <el-button type="primary" link> -->
-                    阅读全文
-                <!-- </el-button> -->
-            </NuxtLink>
+            <div>
+                <NuxtLink v-if="userinfo.id && userinfo.accessToken" :to="`/posts/editor?id=${post.id}`">编辑</NuxtLink>
+                <NuxtLink style="margin-left: 15px;" :to="`/posts/${post.id}`">阅读全文</NuxtLink>
+            </div>
         </div>
     </el-card>
 </template>
 
 <script setup lang="ts">
+import type { LoginResponse } from '~/types';
+
 const props = defineProps<{ post: any }>()
+const userinfo = ref({} as LoginResponse)
+
 const subTitle = (content: string) => {
     if (content.length < 100) {
         return content
@@ -25,6 +28,11 @@ const subTitle = (content: string) => {
         return content.substring(0, 100) + "..."
     }
 }
+
+onMounted(()=>{
+    const { user } = useAuth()
+    userinfo.value = user.value as LoginResponse
+})
 
 </script>
 
@@ -44,6 +52,10 @@ const subTitle = (content: string) => {
     @include ft(14px, $subtx, 400, 2.4);
 }
 
+.time {
+    @include ft(12px, $subtx, 400, 1.2);
+}
+
 .card-footer {
     @include flex(space-between, center);
 }
@@ -55,7 +67,7 @@ const subTitle = (content: string) => {
     right: 0;
     font-size: 14px;
     font-weight: 600;
-    line-height: 24px;
+    line-height: 28px;
     color: #fff;
     text-align: center;
     background: $primary;

@@ -15,26 +15,17 @@
 </template>
 
 <script setup lang="ts">
-const listPosts = [
-    {
-        id: 1,
-        title: "标题标题",
-        content: "内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
-        createdAt: "2024-09-04"
-    },
-    {
-        id: 2,
-        title: "标题标题",
-        content: "内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
-        createdAt: "2024-09-04"
-    },
-    {
-        id: 3,
-        title: "标题标题",
-        content: "内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
-        createdAt: "2024-09-04"
-    },
-]
+const { $ajax } = useNuxtApp()
+const useApi = Api($ajax)
+
+const listPosts = ref<any[]>([])
+
+onMounted(()=>{
+    useApi.listPostsApi({pageInt: 1, pageSize: 10}).then(res=>{
+        console.log("res: ",res)
+        listPosts.value = res.data
+    })
+})
 </script>
 
 <style scoped lang="scss">
@@ -50,7 +41,7 @@ const listPosts = [
     }
 
     .additional {
-        width: 240px;
+        width: 280px;
     }
 }
 </style>

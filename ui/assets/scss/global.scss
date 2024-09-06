@@ -9,6 +9,11 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: Lobster;
+  src:url("~/assets/fonts/Lobster-Regular.ttf");
+}
+
 ul, li {
   list-style: none;
 }
@@ -22,4 +27,21 @@ ul, li {
 // 全局重置一些 Element CSS
 .el-dialog {
   --el-border-radius-small: 0.625em;
+}
+
+.el-message{
+  // z-index: 99999 !important;
+}
+
+.md-editor {
+  z-index: 200 !important;
+}
+
+// 一些工具样式
+.d-flex{
+  display: flex;
+}
+
+.cp{
+  cursor: pointer;
 }

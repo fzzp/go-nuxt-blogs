@@ -4,12 +4,14 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --dotenv .env.development --host 0.0.0.0",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "cleanup": "npx nuxi cleanup"
   },
   "dependencies": {
+    "clipboard": "^2.0.11",
     "md-editor-v3": "^4.19.2",
     "nuxt": "^3.13.0",
     "vue": "latest"

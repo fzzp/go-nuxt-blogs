@@ -28,3 +28,25 @@ func (user *User) Hash() (string, error) {
 func (user *User) Matches(plaintext string) error {
 	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(plaintext))
 }
+
+type UserLoginResponse struct {
+	ID           int64  `json:"id"`
+	Email        string `json:"email"`
+	Username     string `json:"username"`
+	Avatar       string `json:"avatar"`
+	Role         int64  `json:"role"`
+	AccessToken  string `json:"accessToken"`
+	RefreshToken string `json:"refreshToken"`
+}
+
+func (user *User) ToUserLoginResponse(aToken, rToken string) UserLoginResponse {
+	return UserLoginResponse{
+		ID:           user.ID,
+		Email:        user.Email,
+		Username:     user.Username,
+		Avatar:       user.Avatar,
+		Role:         user.Role,
+		AccessToken:  aToken,
+		RefreshToken: rToken,
+	}
+}

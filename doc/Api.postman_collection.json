@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\":\"lightsaid@163.com\",\n    \"password\":\"Go_Qlglx\"\n}",
+					"raw": "{\n    \"email\":\"admin@163.com\",\n    \"password\":\"abc123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

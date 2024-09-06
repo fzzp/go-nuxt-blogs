@@ -48,7 +48,7 @@ func StringAsFileType(s string) FileType {
 type Assets struct {
 	ID          int64    `json:"id"`
 	UserId      int64    `json:"userId"`
-	Data        []byte   `json:"data"`
+	Data        []byte   `json:"-"`
 	FileType    FileType `json:"fileType"`
 	Filename    string   `json:"filename"`
 	Size        int64    `json:"size"`

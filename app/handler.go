@@ -38,7 +38,7 @@ func (app *application) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if err2 != nil {
 		panic(errs.ErrServerError.AsException(err2))
 	}
-	data := envelope{"accessToken": aToken, "refreshToken": rToken, "userinfo": user}
+	data := user.ToUserLoginResponse(aToken, rToken)
 	app.SUCC(w, r, data)
 }
 
@@ -46,6 +46,7 @@ func (app *application) CreatePostHandler(w http.ResponseWriter, r *http.Request
 	var input struct {
 		Title   string  `json:"title" validate:"required,min=2"`
 		Content string  `json:"content" validate:"required,min=2"`
+		AttrID  int64   `json:"attrId"`
 		Tags    []int64 `json:"tags"`
 	}
 
@@ -74,6 +75,7 @@ func (app *application) CreatePostHandler(w http.ResponseWriter, r *http.Request
 		AuthorID: int64(userId),
 		Title:    input.Title,
 		Content:  input.Content,
+		AttrID:   input.AttrID,
 		Tags:     tags,
 	}
 	newID, err := app.Repo.Posts.Create(&p)

@@ -26,6 +26,7 @@ export const toolbars: ToolbarNames[] = [
   'revoke',
   'next',
   'save',
+  1, // 第二个自定义工具
   '=',
   'prettier',
   'pageFullscreen',

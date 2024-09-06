@@ -6,7 +6,7 @@
     "maxIdleTime": "5m",
     "maxLifetime": "2h",
     "host": "0.0.0.0",
-    "port": 4006,
+    "port": 4200,
     "tokenIssuer": "http://localhost:4009",
     "tokenSecret": "0ZsBIM4IaSktsaOCdZlW2cJS4u04QLnhRmcD",
     "tokenExpire": "72h",

@@ -3,6 +3,7 @@ package app
 import (
 	"net/http"
 
+	"github.com/fzzp/gotk"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -41,7 +42,8 @@ func (app *application) routes() http.Handler {
 	})
 
 	// 附加/挂载到mux上,方便版本维护
-	mux.Mount("/api/v1", app.setApiVersion(v1, "v1"))
+	mux.Mount("/api/v1", gotk.SetVersionCtx(v1, "v1"))
 
-	return mux
+	// 设置requesst_id，提供给其他中间使用
+	return gotk.SetRequestIDCtx(mux)
 }

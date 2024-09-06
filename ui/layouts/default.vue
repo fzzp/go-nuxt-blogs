@@ -3,7 +3,7 @@
         <header class="default-layout-header">
             <nav class="navbar">
                 <div class="flex max-w">
-                    <NuxtLink class="nav-link" to="/">
+                    <NuxtLink class="nav-link logo" to="/">
                         Fzzp Blog
                     </NuxtLink>
                     <ul class="navbar-nav">
@@ -11,7 +11,7 @@
                             <NuxtLink class="nav-link" aria-current="page" to="/">首页</NuxtLink>
                         </li>
                         <li class="nav-item ms-4">
-                            <NuxtLink class="nav-link" to="/category">分类</NuxtLink>
+                            <NuxtLink class="nav-link" to="/tag">标签</NuxtLink>
                         </li>
                         <li class="nav-item ms-4">
                             <NuxtLink class="nav-link" to="/about">关于</NuxtLink>
@@ -31,9 +31,10 @@
 </script>
 
 <style scoped lang="scss">
-.default-layout{
+.default-layout {
     height: 45px;
 }
+
 .default-layout-header {
     .navbar {
         position: fixed;
@@ -44,6 +45,7 @@
         padding: 12px;
         background-color: #f5f5f5;
         border-bottom: 1px solid #ccc;
+
         .flex {
             display: flex;
         }
@@ -53,12 +55,20 @@
             gap: 30px;
             margin-left: auto;
         }
-        .nav-link{
+
+        .nav-link {
             text-decoration: none;
         }
+
+        .logo {
+            font-family: Lobster;
+            font-size: 20px;
+        }
     }
+
 }
-.default-layout-content{
+
+.default-layout-content {
     padding-top: 60px;
 }
 </style>
