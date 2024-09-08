@@ -24,6 +24,10 @@ export const Api = <T>(fetch: $Fetch<T, NitroFetchRequest>) => ({
         return fetch('/v1/posts', { "method": "GET", query })
     },
 
+    async getSettings(): Promise<ApiEcho<any>> {
+        return fetch('/v1/settings', { "method": "GET" })
+    },
+
     async listPicsApi(query: PageInfo & {fileType: number}): Promise<ApiEcho<any>> {
         return fetch('/v1/auth/files', { "method": "GET", query })
     },

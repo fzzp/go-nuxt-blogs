@@ -25,6 +25,7 @@ func (app *application) routes() http.Handler {
 	v1.Get("/tags", app.GetListTagsHandler) // &pageInt=1&pageSize=10
 	v1.Get("/tags/{id:[0-9]+}", app.GetTagDetailHandler)
 	v1.Get("/attributes", app.GetListAttributeHandler)
+	v1.Get("/settings", app.GetSettingsHandler)
 
 	v1.Get("/img/{slug:[0-9]+}", app.ShowImageHandler)
 	v1.Get("/file", app.GetFileHandler)

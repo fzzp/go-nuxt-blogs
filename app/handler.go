@@ -365,8 +365,16 @@ func (app *application) ShowImageHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	// NOTE: 这里不再是使用 app.SUCCESS() 作为公共响应
+	// NOTE: 这里不再是使用 app.SUCC() 作为公共响应
 	// 这里必须直接返回文件流
 	w.WriteHeader(http.StatusOK)
 	w.Write(a.Data)
+}
+
+func (app *application) GetSettingsHandler(w http.ResponseWriter, r *http.Request) {
+	data, err := app.Repo.Users.GetSettings()
+	if err != nil {
+		panic(db.ConvertApiError(err))
+	}
+	app.SUCC(w, r, data)
 }

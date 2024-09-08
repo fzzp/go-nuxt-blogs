@@ -7,15 +7,15 @@
         <div class="stat-box">
             <div class="item">
                 <div class="item-head">文章数</div>
-                <div class="item-footer">0</div>
+                <div class="item-footer">{{sumTotal.totalPosts}}</div>
             </div>
             <div class="item">
                 <div class="item-head">阅读数</div>
-                <div class="item-footer">0</div>
+                <div class="item-footer">{{sumTotal.totalViews}}</div>
             </div>
             <div class="item">
                 <div class="item-head">评论数</div>
-                <div class="item-footer">0</div>
+                <div class="item-footer">{{sumTotal.totalComments}}</div>
             </div>
         </div>
         <div style="text-align: center;">
@@ -29,10 +29,19 @@
 <script setup lang="ts">
 import type { LoginResponse } from '~/types';
 import Avatar from "~/assets/imgs/avatar.png";
+
+const { $ajax } = useNuxtApp()
+const useApi = Api($ajax)
 const userinfo = ref({} as LoginResponse)
+const sumTotal = ref<any>({})
+
 onMounted(() => {
     const { user } = useAuth()
     userinfo.value = { ...user.value } as LoginResponse
+
+    useApi.getSettings().then(res=>{
+        sumTotal.value = res.data
+    })
 })
 </script>
 

@@ -11,6 +11,8 @@ type UserRepo interface {
 	Create(u *models.User) (int64, error)
 	Update(u *models.User) error
 	GetByUnique(data map[string]interface{}) (*models.User, error)
+
+	GetSettings() (models.Settings, error)
 }
 
 // 接口检查
@@ -88,4 +90,26 @@ func (store *userRepo) GetByUnique(data map[string]interface{}) (u *models.User,
 		return nil, err
 	}
 	return u, nil
+}
+
+func (store *userRepo) GetSettings() (models.Settings, error) {
+	sql := `
+		select 
+			id, total_posts, total_views, total_comments
+		from 
+			settings limit 1;
+	`
+
+	var ss models.Settings
+	row := store.DB.QueryRow(sql)
+	err := row.Scan(
+		&ss.ID,
+		&ss.TotalPosts,
+		&ss.TotalViews,
+		&ss.TotalComments,
+	)
+	if err != nil {
+		return ss, err
+	}
+	return ss, nil
 }
