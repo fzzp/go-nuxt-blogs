@@ -75,3 +75,49 @@ INSERT INTO tags (tag_name)
 VALUES ("Go"), ("SQLite"), ("MySQL"), ("PostgreSQL"), ("Vue"), ("React"), ("TypeScript"), 
 ("JavaScript"), ("HTML"), ("CSS"), ("SQL");
 
+
+-- ==============================================后续添加=============================================
+
+
+-- ========添加列表=========
+
+-- 给用户增加一个个人介绍字段(bio)
+alter table users add column bio text not null default "这个家伙很懒，什么都没有写～";
+
+-- 给文章增加一个阅读数(views)
+alter table posts add column views integer not null default 0;
+
+
+-- 创建博客设置表
+create table settings (
+    id integer not null primary key autoincrement,
+    total_posts integer not null default 0, -- 总文章数
+    total_views integer not null default 0, -- 文章总阅读数
+    total_comments integer not null default 0 -- 评论总数
+);
+
+insert into 
+    settings (id, total_posts, total_views, total_comments)
+values(1, 0, 0, 0);
+
+
+-- ========添加触发器=========
+
+-- 触发器参考：https://www.sqlitetutorial.net/sqlite-trigger/
+
+-- 创建一个触发器增加 settings.total_posts
+create trigger if not exists calc_post_count after insert on posts 
+begin 
+    update settings set total_posts = total_posts + 1 where id = 1;
+end;
+
+-- 创建一个触发器增加 settings.total_views
+create trigger if not exists calc_post_view 
+    after update on posts
+    when old.views <> new.views 
+begin
+    update settings set total_views = total_views + 1 where id = 1;
+end;
+
+-- 查看触发器
+select * from sqlite_master where type = 'trigger';

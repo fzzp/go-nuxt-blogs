@@ -31,29 +31,30 @@ func (store *userRepo) Create(u *models.User) (int64, error) {
 		email,
 		password,
 		username,
-		avatar
+		avatar,
+		bio
 	) values (
-		$1, $2, $3, $4, $5
+		$1, $2, $3, $4, $5, $6
 	);`
 
-	return create(store.DB, sql, u.ID, u.Email, u.Password, u.Username, u.Avatar)
+	return create(store.DB, sql, u.ID, u.Email, u.Password, u.Username, u.Avatar, u.Bio)
 }
 
 func (store *userRepo) Update(u *models.User) error {
 	sql := `
 		update users 
 		set 
-			username = $1, avatar = $2, updated_at = datetime('now', 'localtime')
+			username=$1, avatar=$2, bio=$3, updated_at=datetime('now', 'localtime')
 		where 
 			id = $3 and deleted_at is null;
 	`
-	return update(store.DB, sql, u.Username, u.Avatar, u.ID)
+	return update(store.DB, sql, u.Username, u.Avatar, u.Bio, u.ID)
 }
 
 func (store *userRepo) GetByUnique(data map[string]interface{}) (u *models.User, err error) {
 	sql := `
 		select 
-			id, email, password, username, avatar, role, created_at, updated_at
+			id, email, password, username, avatar, role, bio, created_at, updated_at
 		from 
 			users 
 		where 
@@ -78,6 +79,7 @@ func (store *userRepo) GetByUnique(data map[string]interface{}) (u *models.User,
 		&u.Username,
 		&u.Avatar,
 		&u.Role,
+		&u.Bio,
 		&u.CreatedAt,
 		&u.UpdatedAt,
 	)

@@ -125,6 +125,7 @@ func (store *postsRepo) Get(id int64) (p *models.Posts, err error) {
 			p.created_at, 
 			p.updated_at,
 			p.attr_id,
+			p.views,
 			u.username, 
 			u.avatar
 		from 
@@ -157,6 +158,7 @@ func (store *postsRepo) Get(id int64) (p *models.Posts, err error) {
 		&p.CreatedAt,
 		&p.UpdatedAt,
 		&p.AttrID,
+		&p.Views,
 		&u.Username,
 		&u.Avatar,
 	)
@@ -182,6 +184,7 @@ func (store *postsRepo) List(f Filter) (list []*models.Posts, err error) {
 		p.id, 
 		p.author_id, 
 		p.attr_id,
+		p.views,
 		p.title, 
 		p.content,
 		p.created_at, 
@@ -224,6 +227,7 @@ func (store *postsRepo) List(f Filter) (list []*models.Posts, err error) {
 			&p.ID,
 			&p.AuthorID,
 			&p.AttrID,
+			&p.Views,
 			&p.Title,
 			&p.Content,
 			&p.CreatedAt,

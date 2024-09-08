@@ -6,6 +6,7 @@ type Posts struct {
 	AttrID    int64   `json:"attrId"`
 	Title     string  `json:"title"`
 	Content   string  `json:"content"`
+	Views     int     `json:"views"`
 	CreatedAt string  `json:"createdAt"`
 	UpdatedAt string  `json:"updatedAt"`
 	DeletedAt *string `json:"-"`

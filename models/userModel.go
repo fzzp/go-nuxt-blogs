@@ -9,6 +9,7 @@ type User struct {
 	Username  string  `json:"username"`
 	Avatar    string  `json:"avatar"`
 	Role      int64   `json:"role"`
+	Bio       string  `json:"bio"`
 	CreatedAt string  `json:"createdAt"`
 	UpdatedAt string  `json:"updatedAt"`
 	DeletedAt *string `json:"-"`
@@ -35,6 +36,7 @@ type UserLoginResponse struct {
 	Username     string `json:"username"`
 	Avatar       string `json:"avatar"`
 	Role         int64  `json:"role"`
+	Bio          string `json:"bio"`
 	AccessToken  string `json:"accessToken"`
 	RefreshToken string `json:"refreshToken"`
 }
@@ -46,6 +48,7 @@ func (user *User) ToUserLoginResponse(aToken, rToken string) UserLoginResponse {
 		Username:     user.Username,
 		Avatar:       user.Avatar,
 		Role:         user.Role,
+		Bio:          user.Bio,
 		AccessToken:  aToken,
 		RefreshToken: rToken,
 	}
