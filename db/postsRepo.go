@@ -12,7 +12,7 @@ type PostsRepo interface {
 	Create(p *models.Posts) (int64, error)
 	Update(p *models.Posts) error
 	Get(id int64) (p *models.Posts, err error)
-	List(f Filter) (list []*models.Posts, err error)
+	List(f Filter) (list []*models.Posts, metadata Metadata, err error)
 
 	CreateTag(t models.Tag) (int64, error)
 	UpdateTag(t models.Tag) error
@@ -178,7 +178,15 @@ func (store *postsRepo) Get(id int64) (p *models.Posts, err error) {
 	return p, nil
 }
 
-func (store *postsRepo) List(f Filter) (list []*models.Posts, err error) {
+func (store *postsRepo) List(f Filter) (list []*models.Posts, metadata Metadata, err error) {
+	var total int
+	sqlTotal := `select count(*) from posts where deleted_at is null`
+	row := store.DB.QueryRow(sqlTotal)
+	err = row.Scan(&total)
+	if err != nil {
+		return
+	}
+
 	sql := `
 	select 
 		p.id, 
@@ -209,13 +217,13 @@ func (store *postsRepo) List(f Filter) (list []*models.Posts, err error) {
 
 	stmt, err := store.DB.PrepareContext(ctx, sql)
 	if err != nil {
-		return nil, err
+		return
 	}
 	defer stmt.Close()
 
 	rows, err := stmt.QueryContext(ctx, f.limit(), f.offset())
 	if err != nil {
-		return nil, err
+		return
 	}
 	defer rows.Close()
 
@@ -237,14 +245,14 @@ func (store *postsRepo) List(f Filter) (list []*models.Posts, err error) {
 			&u.Avatar,
 		)
 		if err != nil {
-			return nil, err
+			return
 		}
 		p.Author = u
 		list = append(list, p)
 	}
 
-	if err := rows.Err(); err != nil {
-		return nil, err
+	if err = rows.Err(); err != nil {
+		return
 	}
 
 	// 查询对应的tag
@@ -253,9 +261,10 @@ func (store *postsRepo) List(f Filter) (list []*models.Posts, err error) {
 		pids[i] = post.ID
 	}
 
-	tags, err := store.GetTagsByPostIDs(pids...)
+	var tags []models.Tag
+	tags, err = store.GetTagsByPostIDs(pids...)
 	if err != nil {
-		return list, err
+		return
 	}
 
 	if len(tags) > 0 {
@@ -271,7 +280,9 @@ func (store *postsRepo) List(f Filter) (list []*models.Posts, err error) {
 		}
 	}
 
-	return list, nil
+	metadata = calculateMetadata(total, f.PageInt, f.PageSize)
+
+	return list, metadata, nil
 }
 
 func (store *postsRepo) CreateTag(t models.Tag) (int64, error) {

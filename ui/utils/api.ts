@@ -20,7 +20,7 @@ export const Api = <T>(fetch: $Fetch<T, NitroFetchRequest>) => ({
         return fetch('v1/auth/updatePost', { "method": "POST", body })
     },
 
-    async listPostsApi(query: PageInfo): Promise<ApiEcho<any[]>> {
+    async listPostsApi(query: PageInfo): Promise<ApiEcho<{list:any[],metadata: any}>> {
         return fetch('/v1/posts', { "method": "GET", query })
     },
 

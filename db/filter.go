@@ -2,7 +2,6 @@ package db
 
 import (
 	"fmt"
-	"math"
 	"strings"
 )
 
@@ -83,7 +82,7 @@ func calculateMetadata(totalRecords, pageInt, pageSize int) Metadata {
 		CurrentPage:  pageInt,
 		PageSize:     pageSize,
 		FirstPage:    1,
-		LastPage:     int(math.Ceil(float64(totalRecords) / float64(pageSize))),
+		LastPage:     (totalRecords + pageSize - 1) / pageSize,
 		TotalRecords: totalRecords,
 	}
 }

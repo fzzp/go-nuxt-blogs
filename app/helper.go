@@ -35,7 +35,7 @@ func (app *application) GetPagination(r *http.Request) (pageInt, pageSize int) {
 	if pageInt <= 0 {
 		pageInt = 1
 	}
-	if pageSize <= 10 {
+	if pageSize <= 0 {
 		pageSize = 10
 	}
 	return

@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"go-nuxt-blogs/models"
+	"strings"
 )
 
 // UserRepo 定义users表操作方法
@@ -36,7 +37,7 @@ func (store *userRepo) Create(u *models.User) (int64, error) {
 	) values (
 		$1, $2, $3, $4, $5, $6
 	);`
-
+	u.Email = strings.ToLower(u.Email)
 	return create(store.DB, sql, u.ID, u.Email, u.Password, u.Username, u.Avatar, u.Bio)
 }
 

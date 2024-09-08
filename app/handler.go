@@ -135,11 +135,12 @@ func (app *application) GetListPostsHandler(w http.ResponseWriter, r *http.Reque
 		PageInt:  pageInt,
 		PageSize: pageSize,
 	}
-	list, err := app.Repo.Posts.List(f)
+	list, metadata, err := app.Repo.Posts.List(f)
 	if err != nil {
 		panic(db.ConvertApiError(err))
 	}
-	app.SUCC(w, r, list)
+
+	app.SUCC(w, r, envelope{"list": list, "metadata": metadata})
 }
 
 func (app *application) GetPostDetailHandler(w http.ResponseWriter, r *http.Request) {
