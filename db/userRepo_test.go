@@ -9,12 +9,20 @@ import (
 )
 
 func createUser(t *testing.T) int64 {
+	// user := models.User{
+	// 	ID:       int64(gotk.RandomInt(100, 10000)),
+	// 	Email:    gotk.RandomString(6) + "@qq.com",
+	// 	Username: gotk.RandomString(4),
+	// 	Avatar:   "http://" + gotk.RandomString(8),
+	// 	Password: gotk.RandomString(6),
+	// }
+
 	user := models.User{
-		ID:       int64(gotk.RandomInt(100, 10000)),
-		Email:    gotk.RandomString(6) + "@qq.com",
-		Username: gotk.RandomString(4),
-		Avatar:   "http://" + gotk.RandomString(8),
-		Password: gotk.RandomString(6),
+		ID:       987654321,
+		Email:    "lightsaid@163.com",
+		Username: "LightSaid",
+		Avatar:   "http://",
+		Password: "gO_qlglx_168",
 	}
 
 	if _, err := user.Hash(); err != nil {

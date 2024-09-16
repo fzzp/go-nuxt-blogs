@@ -46,7 +46,7 @@ func Start() {
 	gotk.NewLogger(conf.LogLevel, true, os.Stdout)
 
 	// 连接SQLite，设置基础参数
-	conn := openDB()
+	conn := openDB(conf)
 	defer conn.Close()
 	conn.SetMaxOpenConns(conf.MaxOpenConns)
 	conn.SetMaxIdleConns(conf.MaxIdleConns)
@@ -81,8 +81,8 @@ func Start() {
 	}
 }
 
-func openDB() *sql.DB {
-	conn, err := sql.Open("sqlite3", "db.sqlite")
+func openDB(conf config.Config) *sql.DB {
+	conn, err := sql.Open("sqlite3", conf.DSN)
 	if err != nil {
 		log.Fatalln("openSQLite() failed: ", err)
 	}
@@ -99,6 +99,12 @@ func openDB() *sql.DB {
 			break
 		}
 		time.Sleep(2 * time.Second)
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+	if err := conn.PingContext(ctx); err != nil {
+		log.Fatalln("db.PingContext() failed: ", err)
 	}
 
 	return conn

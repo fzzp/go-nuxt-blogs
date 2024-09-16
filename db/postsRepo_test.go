@@ -85,7 +85,7 @@ func TestUpdatePosts(t *testing.T) {
 func TestGetListPosts(t *testing.T) {
 	createPosts(t)
 	f := db.Filter{}
-	list, err := testRepo.Posts.List(f)
+	list, _, err := testRepo.Posts.List(f)
 	if err != nil {
 		t.Error(err)
 	}

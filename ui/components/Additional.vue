@@ -21,6 +21,7 @@
         <div style="text-align: center;">
             <div v-if="userinfo.id" style="padding-top: 15px;">
                 <NuxtLink to="/posts/editor" target="_blank">去写文章</NuxtLink>
+                <ElButton text @click="logout">退出登陆</ElButton>
             </div>
         </div>
     </el-card>
@@ -34,6 +35,24 @@ const { $ajax } = useNuxtApp()
 const useApi = Api($ajax)
 const userinfo = ref({} as LoginResponse)
 const sumTotal = ref<any>({})
+
+const logout = () => {
+    ElMessageBox.confirm(
+    '退出会清空本地所有缓存，包括没有提交的文章，请确定！',
+    '温馨提示',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+       Object.keys(localStorage).forEach(key=>{
+        delete localStorage[key]
+       })
+       location.reload()
+    })
+}
 
 onMounted(() => {
     const { user } = useAuth()

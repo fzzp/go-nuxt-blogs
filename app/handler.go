@@ -378,3 +378,17 @@ func (app *application) GetSettingsHandler(w http.ResponseWriter, r *http.Reques
 	}
 	app.SUCC(w, r, data)
 }
+
+// GetUserInfo 获取个人信息
+func (app *application) GetUserInfo(w http.ResponseWriter, r *http.Request) {
+	payload, ok := r.Context().Value(tokenPayloadKey).(*token.Payload)
+	if !ok || payload == nil {
+		app.FAIL(w, r, errs.ErrUnauthorized.AsMessage("未登陆"))
+		return
+	}
+	data, err := app.Repo.Users.GetByUnique(envelope{"id": payload.UserText})
+	if err != nil {
+		panic(db.ConvertApiError(err))
+	}
+	app.SUCC(w, r, data)
+}

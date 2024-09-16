@@ -7,7 +7,9 @@ require (
 	github.com/go-chi/chi/v5 v5.1.0
 	github.com/go-chi/cors v1.2.1
 	github.com/mattn/go-sqlite3 v1.14.23
+	github.com/tomasen/realip v0.0.0-20180522021738-f0c99a92ddce
 	golang.org/x/crypto v0.26.0
+	golang.org/x/time v0.6.0
 )
 
 require (

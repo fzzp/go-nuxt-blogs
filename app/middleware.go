@@ -7,10 +7,13 @@ import (
 	"log/slog"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/fzzp/gotk"
 	"github.com/go-chi/cors"
+	"github.com/tomasen/realip"
+	"golang.org/x/time/rate"
 )
 
 const (
@@ -105,6 +108,58 @@ func (app *application) RequiredAuth(next http.Handler) http.Handler {
 
 		r = r.WithContext(context.WithValue(r.Context(), tokenPayloadKey, payload))
 
+		next.ServeHTTP(w, r)
+	})
+}
+
+func (app *application) RateLimit(next http.Handler) http.Handler {
+	type client struct {
+		limiter  *rate.Limiter
+		lastSeen time.Time
+	}
+
+	var (
+		mu      sync.Mutex
+		clients = make(map[string]*client)
+	)
+
+	// 开一个协程，定时清理
+	go func() {
+		for {
+			time.Sleep(time.Minute)
+			mu.Lock()
+
+			for ip, client := range clients {
+				// 3分钟没有请求，清理掉
+				if time.Since(client.lastSeen) > 3*time.Minute {
+					delete(clients, ip)
+				}
+			}
+			mu.Unlock()
+		}
+	}()
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// 获取客户端真实的ip
+		ip := realip.FromRequest(r)
+
+		mu.Lock()
+
+		// 如果没有就创建一个client
+		if _, found := clients[ip]; !found {
+			// 每秒允许3个请求，一次最多可发送6个请求。
+			clients[ip] = &client{limiter: rate.NewLimiter(rate.Limit(5), 10)}
+		}
+
+		// 更新最后一次请求时间
+		clients[ip].lastSeen = time.Now()
+
+		if !clients[ip].limiter.Allow() {
+			mu.Unlock()
+			app.FAIL(w, r, errs.ErrTooManyRequests)
+			return
+		}
+		mu.Unlock()
 		next.ServeHTTP(w, r)
 	})
 }

@@ -15,6 +15,12 @@ export default defineNuxtConfig({
       ImgPrev: process.env.NUXT_PUBLIC_IMG_BASE
     }
   },
+  plugins: [
+    {
+      src: "~/plugins/checkAuth",
+      mode: "client"
+    }
+  ],
   css: [
     "~/assets/scss/global.scss",
   ],

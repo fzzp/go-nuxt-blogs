@@ -14,6 +14,7 @@ func (app *application) routes() http.Handler {
 	mux.Use(middleware.CleanPath)
 	mux.Use(middleware.Logger)
 	mux.Use(app.RecoverPanic)
+	mux.Use(app.RateLimit)
 
 	// 跨域中间件
 	mux.Use(app.EnableCORS())
@@ -34,6 +35,7 @@ func (app *application) routes() http.Handler {
 	v1.Route("/auth", func(r chi.Router) {
 		r.Use(app.RequiredAuth)
 
+		r.Get("/getUserInfo", app.GetUserInfo)
 		r.Post("/createTag", app.CreateTagHandler)
 		r.Post("/createPost", app.CreatePostHandler)
 		r.Post("/updatePost", app.UpdatePostHandler)

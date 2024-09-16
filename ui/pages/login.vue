@@ -1,7 +1,7 @@
 <template>
     <Page>
         <el-form :model="form" :rules="rules" label-width="auto" style="max-width: 400px; margin: 50px auto;">
-            <el-form-item label="邮箱" prop="email">
+            <el-form-item label="邮箱" prop="email" autocapitalize>
                 <el-input v-model="form.email" />
             </el-form-item>
 

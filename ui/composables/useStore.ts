@@ -14,7 +14,7 @@ export function useStore<T>(key: string, initialValue: T | (() => T)) {
     // 初始化值，如果localStorage有则取，无则使用initialValue
     const getInitValue = () => {
         const jsonValue = localStorage.getItem(key);
-        if (jsonValue != null) return JSON.parse(jsonValue);
+        if (jsonValue != null && jsonValue !== "undefined") return JSON.parse(jsonValue);
         if (typeof initialValue === 'function') {
             return (initialValue as () => T)();
         } else {

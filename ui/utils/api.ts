@@ -12,6 +12,10 @@ export const Api = <T>(fetch: $Fetch<T, NitroFetchRequest>) => ({
         return fetch('/v1/login', { "method": "POST", body })
     },
 
+    async getUserInfo(): Promise<ApiEcho<any>> {
+        return fetch('/v1/auth/getUserInfo', { "method": "GET" })
+    },
+
     async createPostApi(body: NewPostRequest): Promise<ApiEcho<number>> {
         return fetch('/v1/auth/createPost', { "method": "POST", body })
     },

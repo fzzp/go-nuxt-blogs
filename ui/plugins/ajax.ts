@@ -1,3 +1,5 @@
+import type { LoginResponse } from '~/types';
+import { useAuth } from './../composables/useAuth';
 export default defineNuxtPlugin((nuxtApp) => {
   const ajax = $fetch.create({
     baseURL: useRuntimeConfig().public.Apiprev,
@@ -14,7 +16,11 @@ export default defineNuxtPlugin((nuxtApp) => {
     },
     async onResponseError({ response }) {
       if (response.status === 401) {
-        await nuxtApp.runWithContext(() => navigateTo('/login'))
+        const { user } = useAuth()
+        user.value = {} as LoginResponse // 登陆失效，清空个人信息
+        if(!response.url.includes("auth/getUserInfo")){
+          await nuxtApp.runWithContext(() => navigateTo('/login'))
+        }
       }
     }
   })
